@@ -1,6 +1,5 @@
 # Lab: Hadoop Streaming
 
-
 1. Start an Amazon Elastic MapReduce (EMR) Cluster using Quickstart with the following setup:
 	*  Give the cluster a name that is meaningful to you
 	*  Use Release `emr-5.11.1`
@@ -13,9 +12,9 @@
 
 3. Install git on the master node: `sudo yum install -y git`
 
-3. Clone this repository to the master node. Note: since this is a public repository you do can use the `http` GitHub URL: `git clone https://github.com/gu-anly502/lab05-spring-2018.git`
+3. Clone this repository to the master node. Note: since this is a public repository you do can use the `http` GitHub URL: `https://github.com/bigdatateaching/hadoop-streaming.git`
 
-4. Change directory into the lab: `cd lab05-spring-2018` 
+4. Change directory into the lab: `cd hadoop-streaming` 
 
 5. In this example, you will run a **simulated MapReduce job** on a text file. We say simulated because you will not be using Hadoop to do this but rather a combination of command line functions and pipes that resemble what happens when you run a Hadoop Streaming job on a cluster on a large file. Page 50 of the book shows an example of how to test your mapper and reducer. 
 
@@ -46,14 +45,14 @@
 	
 	```
 	hadoop jar /usr/lib/hadoop/hadoop-streaming.jar \
-	-files /home/hadoop/lab05-spring-2018/basic-mapper.py,/home/hadoop/lab05-spring-2018/basic-reducer.py \
+	-files /home/hadoop/hadoop-streaming/basic-mapper.py,/home/hadoop/hadoop-streaming/basic-reducer.py \
 	-input s3://bigdatateaching/gutenberg-single-file-25m.txt \
 	-output gutenberg-word-count \
 	-mapper basic-mapper.py \
 	-reducer basic-reducer.py
 	```
 	* The first line `hadoop jar /usr/lib/hadoop/hadoop-streaming.jar` is launching Hadoop with the Hadoop Streaming jar. A jar is a Java Archive file, and Hadoop Streaming is a special kind of jar that allows you to run non Java programs.
-	* The line `-files /home/hadoop/lab05-spring-2018/basic-mapper.py,/home/hadoop/lab05-spring-2018/basic-reducer.py` tells Hadoop that it needs to "ship" the **local** mapper and reducer files to every node on the cluster. Remember, these files do not exist before the job is run, so you need to package those files with the job so they run
+	* The line `-files /home/hadoop/hadoop-streaming/basic-mapper.py,/home/hadoop/hadoop-streaming/basic-reducer.py` tells Hadoop that it needs to "ship" the **local** mapper and reducer files to every node on the cluster. Remember, these files do not exist before the job is run, so you need to package those files with the job so they run
 	* The line `-input [[input-file]]` tells the job where your source file(s) are. These files need to be either in HDFS or S3. If you specify a directory, all files in the directory will be used as inputs
 	* The line line `-output [[output-location]]` tells the job where to store the output of the job, either in HDFS or S3. **This parameter is just a name of a location, and it must not exist before running the job otherwise the job will fail.**
 	* The line `-mapper basic-mapper.py` specifies the name of the executable for the mapper. Note that you need to ship the programs if they are custom programs
@@ -61,6 +60,4 @@
 	* For more information about the Hadoop Streaming parameters, look at the documentation: [https://hadoop.apache.org/docs/r2.7.3/hadoop-streaming/HadoopStreaming.html](https://hadoop.apache.org/docs/r2.7.3/hadoop-streaming/HadoopStreaming.html)
 	
 1. We have provided multiple cuts of the Gutenberg data, from the whole file to the first 10, 25, and 50 million. We encourage you to experiment with these files, using clusters of different size.
-
-
 
